@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-// Replit sucks so i have to do this in the console and then convert it later
+// Replit sucks, so I have to do this in the console and then convert it later
 public class Main {
     public static void main(String[] args) {
         // Difficulties
