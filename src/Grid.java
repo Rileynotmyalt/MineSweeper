@@ -70,12 +70,15 @@ public class Grid {
 				int y;
 				Square[][] grid = this.rawGrid;
         for (int i = 0; i < grid.length; i++) {
-            do {
+            while (true) {
                 x = new Random().nextInt(grid.length);
                 y = new Random().nextInt(grid.length);
-								grid[y][x].isBomb = true;
-								this.bombs.add(grid[y][x]);
-            } while (!grid[y][x].isBomb);
+								if (!grid[y][x].isBomb){
+									grid[y][x].isBomb = true;
+									this.bombs.add(grid[y][x]);
+									break;
+								}
+            } 
         }
     }
 
@@ -85,21 +88,32 @@ public class Grid {
 				int y;
 				Square[][] grid = this.rawGrid;
         for (int i = 0; i < grid.length; i++) {
-            do {
+            while (true) {
                 x = new Random().nextInt(grid.length);
                 y = new Random().nextInt(grid.length);
-                if (!grid[y][x].isBomb) {
+								// & if bomb not in radius of clicked
+                if (!grid[y][x].isBomb && !bombNearClicked(xClicked,yClicked,x,y)) {
                     grid[y][x].isBomb = true;
                     this.bombs.add(grid[y][x]);
+										break;
                 }
-            } while (!bombNearClicked( xClicked, yClicked));
+            } // while (!bombNearClicked( xClicked, yClicked));
         }
     }
 
-
-		// this is redundant. need to check before def as bomb
-		public boolean bombNearClicked(int xClicked, int yClicked) {
-				return (this.rawGrid[yClicked][xClicked].borderingBombs > 0 && this.rawGrid[yClicked][xClicked].isBomb);
+		// maybe change later, rather than no bombs, limit #
+		// possibly make a certian area that would open?
+		public boolean bombNearClicked(int xClicked, int yClicked, int xCheck, int yCheck) {
+				boolean nearClicked = false;
+				int[][] offsets = {
+                {-1, -1}, { 0, -1}, { 1, -1},
+                {-1,  0}, /*Self*/  { 1,  0},
+                {-1,  1}, { 0,  1}, { 1,  1}
+        };
+				for (int[] delta : offsets) {
+						if (xClicked + delta[0] == xCheck && yClicked + delta[1] == yCheck) {return true;} 
+				}
+				return nearClicked;
 		}
 
     public void setBorderingBombs() {
