@@ -1,5 +1,6 @@
 public class Square {
     boolean isBomb;
+		boolean isClear = false;
     int borderingBombs;
     int x;
     int y;
